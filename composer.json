@@ -1,0 +1,29 @@
+{
+    "name": "angry-moustache/media",
+    "description": "Attachment package",
+    "keywords": [
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4.0",
+        "spatie/image": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AngryMoustache\\Media\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AngryMoustache\\Media\\Providers\\MediaServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
