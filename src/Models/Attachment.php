@@ -2,13 +2,13 @@
 
 namespace AngryMoustache\Media\Models;
 
-use App\Models\Model;
 use Exception;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Spatie\Image\Image;
 
-class Attachment extends Model
+class Attachment extends EloquentModel
 {
     protected $fillable = [
         'original_name',
