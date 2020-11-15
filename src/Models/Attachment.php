@@ -14,6 +14,11 @@ class Attachment extends EloquentModel
         'original_name',
         'alt_name',
         'disk',
+        'height',
+        'width',
+        'size',
+        'mime_type',
+        'extension'
     ];
 
     public function getPath($format = null)
@@ -58,23 +63,26 @@ class Attachment extends EloquentModel
         return optional(Storage::disk($this->disk))->url($url);
     }
 
-    public static function lubeUpload($file)
+    public static function livewireUpload($file)
     {
         if (!is_file($file->getRealPath())) {
             return null;
         }
 
         $original = $file->getClientOriginalName();
-
-        if ($reupload = self::where('original_name', $original)->first()) {
-            return $reupload;
-        }
-
-        $attachment = self::create([
+        $fileInfo = getimagesize($file->getRealPath());
+        $attachment = [
             'original_name' => $original,
             'alt_name' => $original,
-            'disk' => 'public'
-        ]);
+            'disk' => 'public',
+            'width' => $fileInfo[0],
+            'height' => $fileInfo[1],
+            'mime_type' => $fileInfo['mime'],
+            'size' => filesize($file->getRealPath()),
+            'extension' => $file->guessExtension()
+        ];
+
+        $attachment = self::firstOrCreate($attachment);
 
         Storage::putFileAs(
             "public/attachments/{$attachment->id}/",
