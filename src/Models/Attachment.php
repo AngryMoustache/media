@@ -21,6 +21,15 @@ class Attachment extends EloquentModel
         'extension'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::addGlobalScope('order', function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        });
+    }
+
     public function getPath($format = null)
     {
         $url = $this->id . '/' . ($format ? $format . '-' : '') . $this->original_name;
