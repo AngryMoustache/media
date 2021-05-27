@@ -83,7 +83,7 @@ class Attachment extends EloquentModel
         $attachment = [
             'original_name' => $original,
             'alt_name' => $original,
-            'disk' => 'public',
+            'disk' => config('media.default-disk', 'public'),
             'width' => $fileInfo[0],
             'height' => $fileInfo[1],
             'mime_type' => $fileInfo['mime'],

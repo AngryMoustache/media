@@ -13,5 +13,8 @@ class MediaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../database/migrations/' => database_path('migrations')
         ], 'angry-moustache/media');
+
+        $this->mergeConfigFrom(__DIR__ . '/../../config/media.php', 'media');
+        config(['filesystems.disks.attachments' => config('media.disk', [])]);
     }
 }
