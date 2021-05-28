@@ -14,7 +14,7 @@ class AddFolderLocationToAttachments extends Migration
     public function up()
     {
         Schema::table('attachments', function (Blueprint $table) {
-            $table->text('folder_location')->default('uploads')->nullable()->after('disk');
+            $table->string('folder_location')->default('uploads')->nullable()->after('disk');
         });
     }
 
