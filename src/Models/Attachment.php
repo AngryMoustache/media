@@ -18,7 +18,8 @@ class Attachment extends EloquentModel
         'width',
         'size',
         'mime_type',
-        'extension'
+        'extension',
+        'folder_location',
     ];
 
     public static function boot()
@@ -74,13 +75,14 @@ class Attachment extends EloquentModel
 
     public static function livewireUpload($file)
     {
-        if (!is_file($file->getRealPath())) {
+        if (! is_file($file->getRealPath())) {
             return null;
         }
 
         $original = $file->getClientOriginalName();
         $fileInfo = getimagesize($file->getRealPath());
-        $attachment = [
+
+        $attachment = self::firstOrCreate([
             'original_name' => $original,
             'alt_name' => $original,
             'disk' => config('media.default-disk', 'public'),
@@ -89,9 +91,7 @@ class Attachment extends EloquentModel
             'mime_type' => $fileInfo['mime'],
             'size' => filesize($file->getRealPath()),
             'extension' => $file->guessExtension()
-        ];
-
-        $attachment = self::firstOrCreate($attachment);
+        ]);
 
         Storage::putFileAs(
             "public/attachments/{$attachment->id}/",
