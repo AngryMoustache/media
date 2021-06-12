@@ -15,18 +15,21 @@ class GetRandomPexelImages extends Command
 
     protected $description = 'Import images from Pexel';
 
+    public $amount;
+    public $type;
+
     public function handle(Client $client)
     {
+        $this->amount = $this->argument('amount') ?? 10;
+        $this->type = $this->argument('type') ?? 'kitten';
+
         $askedImageSize = $this->choice(
             'Image size? [small (4MP) / medium (12MP) / large (24MP)]',
             ['small', 'medium', 'large'],
             0
         );
 
-        $this->info(
-            'Importing ' . $this->argument('amount', 10) . ' ' .
-            $this->argument('type', 10) . ' images from Pexel.'
-        );
+        $this->info("Importing {$this->amount} {$this->type} images from Pexel.");
 
         $this->importImages(
             $this->fetchImagesFromPexel($client),
@@ -72,8 +75,8 @@ class GetRandomPexelImages extends Command
         $response = $client->get('https://api.pexels.com/v1/search', [
             'headers' => ['Authorization' => env('PEXEL_KEY')],
             'query' => [
-                'query' => $this->argument('type'),
-                'per_page' => $this->argument('amount', 10),
+                'query' => $this->type,
+                'per_page' => $this->amount,
             ],
         ]);
 
