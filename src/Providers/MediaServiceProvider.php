@@ -2,6 +2,7 @@
 
 namespace AngryMoustache\Media\Providers;
 
+use AngryMoustache\Media\Commands\GetRandomPexelImages;
 use Illuminate\Support\ServiceProvider;
 
 class MediaServiceProvider extends ServiceProvider
@@ -16,5 +17,11 @@ class MediaServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom(__DIR__ . '/../../config/media.php', 'media');
         config(['filesystems.disks.attachments' => config('media.disk', [])]);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GetRandomPexelImages::class,
+            ]);
+        }
     }
 }
