@@ -20,6 +20,11 @@ class Attachment extends EloquentModel
         'mime_type',
         'extension',
         'folder_location',
+        'crops',
+    ];
+
+    public $casts = [
+        'crops' => 'json',
     ];
 
     public function getPath($format = null)
