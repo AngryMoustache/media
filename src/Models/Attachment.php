@@ -51,22 +51,24 @@ class Attachment extends EloquentModel
             return optional(Storage::disk($this->disk))->url($url);
         }
 
-        if (!is_file($formatPath)) {
+        if (class_exists($formatClassApp)) {
+            $formatClass = $formatClassApp;
+        } elseif (class_exists($formatClass)) {
+            $formatClass = $formatClass;
+        } else {
+            throw new Exception('Image Format not found, please create one in App\\Formats');
+        }
+
+        if (! is_file($formatPath)) {
             $image = Image::load($path);
-
-            if (class_exists($formatClassApp)) {
-                $image = $formatClassApp::render($image);
-            } elseif (class_exists($formatClass)) {
-                $image = $formatClass::render($image);
-            } else {
-                throw new Exception('Image Format not found, please create one in App\\Formats');
-            }
-
+            $formatClass::render($image);
             $image->save($formatPath);
         }
 
+        $refresh = $formatClass::$alwaysRefresh;
         $url = $this->id . '/' . ($format ? $format . '-' : '') . $this->original_name;
-        return optional(Storage::disk($this->disk))->url($url);
+        $url = optional(Storage::disk($this->disk))->url($url);
+        return $url . ($refresh ? '?r=' . rand(1, 1000) : '');
     }
 
     public static function livewireUpload($file)
