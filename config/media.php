@@ -7,5 +7,10 @@ return [
         'root' => storage_path('app/public/attachments'),
         'url' => env('APP_URL') . '/storage/attachments',
         'visibility' => 'public',
-    ]
+    ],
+    'cropper' => [
+        'formats' => [
+            \AngryMoustache\Media\Formats\Thumb::class => 'Thumb',
+        ],
+    ],
 ];
