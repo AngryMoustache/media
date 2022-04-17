@@ -8,6 +8,9 @@ return [
         'url' => env('APP_URL') . '/storage/attachments',
         'visibility' => 'public',
     ],
+    'ignore-extensions' => [
+        'svg',
+    ],
     'cropper' => [
         'formats' => [
             \AngryMoustache\Media\Formats\Thumb::class => 'Thumb',

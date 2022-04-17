@@ -46,7 +46,7 @@ class Attachment extends EloquentModel
         $formatClassApp = 'App\\Formats\\' . ucfirst($format);
         $formatClass = 'AngryMoustache\\Media\\Formats\\' . ucfirst($format);
 
-        if (in_array(Str::afterLast($path, '.'), ['svg', 'gif'])) {
+        if (in_array(Str::afterLast($path, '.'), config('media.ignore-extensions'))) {
             $url = $this->id . '/' . $this->original_name;
             return optional(Storage::disk($this->disk))->url($url);
         }
